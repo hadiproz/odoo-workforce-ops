@@ -95,10 +95,10 @@
                 <filter name="filter_archived" string="Archived"
                         domain="[('active', '=', False)]"
                         context="{'active_test': False}"/>
-                <groupby name="group_by_status" string="Status"
-                         context="{'group_by': 'status'}"/>
-                <groupby name="group_by_job_position" string="Job Position"
-                         context="{'group_by': 'job_position'}"/>
+                <filter name="group_by_status" string="Status"
+                        context="{'group_by': 'status'}"/>
+                <filter name="group_by_job_position" string="Job Position"
+                        context="{'group_by': 'job_position'}"/>
             </search>
         </field>
     </record>

@@ -121,10 +121,10 @@
                 <filter name="filter_cancelled" string="Cancelled"
                         domain="[('state', '=', 'cancelled')]"
                         groups="workforce_ops.group_workforce_manager"/>
-                <groupby name="group_by_client" string="Client"
-                         context="{'group_by': 'client_id'}"/>
-                <groupby name="group_by_state" string="State"
-                         context="{'group_by': 'state'}"/>
+                <filter name="group_by_client" string="Client"
+                        context="{'group_by': 'client_id'}"/>
+                <filter name="group_by_state" string="State"
+                        context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>

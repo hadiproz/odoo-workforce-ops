@@ -93,12 +93,12 @@
                 <filter name="filter_cancelled" string="Cancelled"
                         domain="[('state', '=', 'cancelled')]"
                         groups="workforce_ops.group_workforce_manager"/>
-                <groupby name="group_by_worker" string="Worker"
-                         context="{'group_by': 'worker_id'}"/>
-                <groupby name="group_by_order" string="Job Order"
-                         context="{'group_by': 'job_order_id'}"/>
-                <groupby name="group_by_state" string="State"
-                         context="{'group_by': 'state'}"/>
+                <filter name="group_by_worker" string="Worker"
+                        context="{'group_by': 'worker_id'}"/>
+                <filter name="group_by_order" string="Job Order"
+                        context="{'group_by': 'job_order_id'}"/>
+                <filter name="group_by_state" string="State"
+                        context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
