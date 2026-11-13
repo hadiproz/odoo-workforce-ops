@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  odoo-ci:
+    name: Odoo 20 install, tests and HTTP
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      COMPOSE_PROJECT_NAME: workforce_ops_ci_${{ github.run_id }}_${{ github.run_attempt }}
+      ODOO_DB_PASSWORD: odoo
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Prepare evidence directory
+        shell: bash
+        run: |
+          mkdir -p ci-artifacts
+          printf 'CI evidence placeholder: Odoo gate has not started yet\n' \
+            > ci-artifacts/placeholder.txt
+
+      - name: Run Odoo gate
+        shell: bash
+        run: bash ci/run_tests.sh
+
+      - name: Upload CI evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: workforce-ops-ci-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-artifacts/
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Cleanup Docker resources
+        if: always()
+        shell: bash
+        run: docker compose down --volumes --remove-orphans
