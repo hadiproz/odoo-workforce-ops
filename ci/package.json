@@ -1,0 +1,12 @@
+{
+  "name": "workforce-ops-screenshots",
+  "private": true,
+  "type": "module",
+  "description": "Playwright capture script for the README screenshots",
+  "scripts": {
+    "capture": "node screenshots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.65.0"
+  }
+}

@@ -18,6 +18,9 @@ pgdata/
 *.dump
 *.log
 
+# Node tooling (screenshot capture script)
+node_modules/
+
 # CI evidence
 ci-artifacts/
 cookies.txt
