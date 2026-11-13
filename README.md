@@ -8,6 +8,30 @@ student**, not a production system and not tied to any real employer.
 
 The module is original work and is released under the MIT license.
 
+## Screenshots
+
+The images below are captured by the manually triggered
+[`screenshots` workflow](.github/workflows/screenshots.yml) in GitHub Actions
+from a demo database: the runner installs the module with its demo data, logs
+in as `admin` with Playwright, waits for real records to render, and saves the
+UI at 1440×900. The boards also receive a few extra sample records from
+`ci/seed_screenshots_data.py` so every column has content; nothing is mocked,
+fabricated or hand-edited.
+
+![Job Orders kanban populated with demo data](docs/screenshots/01-job-orders-kanban.png)
+
+*Job Orders kanban, grouped by workflow state.*
+
+| Job order form | Workers by status |
+| :---: | :---: |
+| ![Job order form with progressbar and statusbar](docs/screenshots/02-job-order-form.png) | ![Workers kanban grouped by status](docs/screenshots/03-workers.png) |
+| Progressbar and statusbar on a demo job order. | Workers grouped by computed status. |
+
+| Placements list | Assignment letter |
+| :---: | :---: |
+| ![Placements list with workflow states](docs/screenshots/04-placements.png) | ![First page of the assignment letter PDF](docs/screenshots/05-assignment-letter.png) |
+| Placements with their workflow states. | First page of the printed PDF letter. |
+
 ## What it does
 
 `workforce_ops` manages three business objects:
@@ -47,11 +71,6 @@ status, including when the records involved are hidden from the current user.
 | Demo data | 3 clients, 5 workers, 3 job orders, 2 placements (fictional) |
 | Tests | Odoo `TransactionCase` / `HttpCase`, run by CI with `--test-enable` |
 
-## Screenshots
-
-Screenshots will be added after a local run on a machine with Docker. They are
-intentionally not fabricated or committed in advance.
-
 ## Quickstart (local Docker)
 
 Prerequisites: Docker with Compose v2.
@@ -83,8 +102,16 @@ odoo-workforce-ops/
   README.md
   LICENSE
   docker-compose.yml
-  ci/run_tests.sh
-  .github/workflows/ci.yml
+  ci/
+    run_tests.sh
+    screenshots.mjs
+    seed_screenshots_data.py
+    package.json
+    package-lock.json
+  docs/screenshots/
+  .github/workflows/
+    ci.yml
+    screenshots.yml
   addons/workforce_ops/
     __init__.py
     __manifest__.py
@@ -270,6 +297,26 @@ bash ci/run_tests.sh
 The GitHub workflow removes its isolated Compose project after uploading the
 evidence; the script itself never starts a Docker daemon.
 
+## Screenshots workflow
+
+`.github/workflows/screenshots.yml` is manual (`workflow_dispatch`) and keeps
+the local Docker daemon out of the loop:
+
+1. Starts the Compose stack, creates `workforce_ops_demo` with the module and
+   its demo data, and seeds the extra sample records used for visual density.
+2. Boots the web client and waits for HTTP 200 on `/web/login`.
+3. Runs `ci/screenshots.mjs` with a pinned Playwright (see
+   `ci/package-lock.json`); it logs in as `admin` and waits for rendered
+   records and a short settle delay before every shot, at 1440×900.
+4. Uploads `docs/screenshots/` as a workflow artifact together with the Odoo
+   logs.
+
+Regenerate the images with:
+
+```bash
+gh workflow run screenshots.yml
+```
+
 ## Tech versions
 
 - **Odoo 20** — image `odoo:20.0-20261112` (pinned by digest
@@ -303,9 +350,9 @@ appear only when a database is created with demo data.
   has CSRF disabled for session-authenticated JSON calls.
 - The assignment letter renders current linked data; it does not snapshot
   client or position values at placement time.
-- Browser-level visual rendering (kanban/forms) is not exercised by CI. The CI
-  proof covers installation, ORM tests, HTTP endpoints, real PDF bytes and the
-  HTTP login page.
+- Browser-level visual rendering (kanban/forms) is not exercised by the
+  `ci.yml` gate; the separate `screenshots` workflow renders the real UI and
+  its images are committed under `docs/screenshots/`.
 
 ## License
 
