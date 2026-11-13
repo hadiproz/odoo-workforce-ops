@@ -6,7 +6,6 @@
         <field name="model">workforce.placement</field>
         <field name="report_type">qweb-pdf-wkhtmltopdf</field>
         <field name="report_name">workforce_ops.report_placement_assignment_letter</field>
-        <field name="report_file">workforce_ops.report_placement_assignment_letter</field>
         <field name="print_report_name">'Placement-Assignment-%s.pdf' % object.id</field>
         <field name="binding_model_id" ref="model_workforce_placement"/>
         <field name="binding_type">report</field>
