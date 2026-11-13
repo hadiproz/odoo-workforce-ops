@@ -74,7 +74,7 @@ else:
     machine = make_order(garuda, 'Machine Operator', 3, '2027-01-18', 'confirmed')
     sales = make_order(cakrawala, 'Sales Assistant', 2, '2026-12-12', 'confirmed')
     supervisor = make_order(nusantara, 'Warehouse Supervisor', 1, '2026-11-30', 'done')
-    make_order(cakrawala, 'Stock Clerk', 2, '2027-01-25', 'cancelled')
+    make_order(cakrawala, 'Stock Clerk', 2, '2027-01-25', 'draft')
 
     agus = make_worker('Agus Setiawan', 'Packing Operator')
     rina = make_worker('Rina Kartika', 'Quality Control Inspector')

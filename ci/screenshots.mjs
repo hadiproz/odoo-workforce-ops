@@ -36,6 +36,8 @@ async function waitForServer() {
 }
 
 async function settle(page, ms = 1500) {
+  // Park the pointer on empty space so hover tooltips do not end up in shots.
+  await page.mouse.move(5, 895).catch(() => {});
   await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
   await page
     .waitForFunction(() => !document.querySelector('.o_loading_indicator, .o_blockUI'), null, {
