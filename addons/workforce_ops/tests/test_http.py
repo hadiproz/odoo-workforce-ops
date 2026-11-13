@@ -188,7 +188,15 @@ class TestWorkforceHttp(HttpCase):
 
     def test_assignment_letter_pdf(self):
         self._login('wf_http_user')
-        response = self.url_open(self._report_url(), timeout=120)
+        # A fresh test database has no cached PDF asset bundle. Odoo's
+        # read-only test cursor would reject the attachment cache write, so
+        # allow writes for this one rendering request (same facility used by
+        # Odoo's own asset tests).
+        self.set_registry_readonly_mode(False)
+        try:
+            response = self.url_open(self._report_url(), timeout=120)
+        finally:
+            self.set_registry_readonly_mode(True)
         self.assertEqual(response.status_code, 200)
         self.assertIn('application/pdf', response.headers.get('Content-Type', ''))
         self.assertTrue(response.content.startswith(b'%PDF-'))

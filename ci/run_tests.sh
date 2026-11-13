@@ -140,14 +140,14 @@ verify_test_log() {
 }
 
 REQUIRED_TESTS=(
-    "odoo.addons.workforce_ops.tests.test_job_order.TestJobOrder.test_confirm_draft_job_order"
-    "odoo.addons.workforce_ops.tests.test_placement.TestPlacement.test_filled_count_when_placed"
-    "odoo.addons.workforce_ops.tests.test_placement.TestPlacement.test_worker_has_at_most_one_active_placement"
-    "odoo.addons.workforce_ops.tests.test_worker.TestWorker"
-    "odoo.addons.workforce_ops.tests.test_security.TestWorkforceSecurity"
-    "odoo.addons.workforce_ops.tests.test_report.TestAssignmentLetter"
-    "odoo.addons.workforce_ops.tests.test_http.TestWorkforceHttp.test_assignment_letter_pdf"
-    "odoo.addons.workforce_ops.tests.test_demo.TestWorkforceDemo"
+    "workforce_ops.test_job_order.TestJobOrder.test_confirm_draft_job_order"
+    "workforce_ops.test_placement.TestPlacement.test_filled_count_when_placed"
+    "workforce_ops.test_placement.TestPlacement.test_worker_has_at_most_one_active_placement"
+    "workforce_ops.test_worker.TestWorker"
+    "workforce_ops.test_security.TestWorkforceSecurity"
+    "workforce_ops.test_report.TestAssignmentLetter"
+    "workforce_ops.test_http.TestWorkforceHttp.test_assignment_letter_pdf"
+    "workforce_ops.test_demo.TestWorkforceDemo"
 )
 
 verify_required_tests() {
