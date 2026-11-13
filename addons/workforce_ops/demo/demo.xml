@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Fictional portfolio sample data: companies, people and contacts are not real. -->
+
+        <record id="demo_client_nusantara" model="res.partner">
+            <field name="name">PT Nusantara Logistik Sejahtera</field>
+            <field name="is_company" eval="True"/>
+            <field name="street">Jl. Raya Bekasi KM 21</field>
+            <field name="city">Jakarta</field>
+            <field name="phone">+62 21 5550 1001</field>
+            <field name="email">contact@nusantara-logistik.example.com</field>
+        </record>
+
+        <record id="demo_client_garuda" model="res.partner">
+            <field name="name">PT Garuda Manufaktur Indonesia</field>
+            <field name="is_company" eval="True"/>
+            <field name="street">Jl. Industri Selatan Blok C</field>
+            <field name="city">Bekasi</field>
+            <field name="phone">+62 21 5550 2002</field>
+            <field name="email">contact@garuda-manufaktur.example.com</field>
+        </record>
+
+        <record id="demo_client_cakrawala" model="res.partner">
+            <field name="name">PT Cakrawala Retail Mandiri</field>
+            <field name="is_company" eval="True"/>
+            <field name="street">Jl. Asia Afrika No. 88</field>
+            <field name="city">Bandung</field>
+            <field name="phone">+62 22 5550 3003</field>
+            <field name="email">contact@cakrawala-retail.example.com</field>
+        </record>
+
+        <record id="demo_worker_dewi" model="workforce.worker">
+            <field name="name">Dewi Anggraini</field>
+            <field name="job_position">Warehouse Operator</field>
+            <field name="phone">+62 812 0000 1001</field>
+            <field name="email">dewi.anggraini@example.com</field>
+        </record>
+
+        <record id="demo_worker_budi" model="workforce.worker">
+            <field name="name">Budi Santoso</field>
+            <field name="job_position">Production Operator</field>
+            <field name="phone">+62 812 0000 1002</field>
+            <field name="email">budi.santoso@example.com</field>
+        </record>
+
+        <record id="demo_worker_rizky" model="workforce.worker">
+            <field name="name">Rizky Pratama</field>
+            <field name="job_position">Warehouse Operator</field>
+            <field name="phone">+62 812 0000 1003</field>
+            <field name="email">rizky.pratama@example.com</field>
+        </record>
+
+        <record id="demo_worker_siti" model="workforce.worker">
+            <field name="name">Siti Rahmawati</field>
+            <field name="job_position">Store Crew</field>
+            <field name="phone">+62 812 0000 1004</field>
+            <field name="email">siti.rahmawati@example.com</field>
+        </record>
+
+        <record id="demo_worker_andi" model="workforce.worker">
+            <field name="name">Andi Saputra</field>
+            <field name="job_position">Production Operator</field>
+            <field name="phone">+62 812 0000 1005</field>
+            <field name="email">andi.saputra@example.com</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <record id="demo_order_warehouse" model="workforce.job.order">
+            <field name="client_id" ref="demo_client_nusantara"/>
+            <field name="position_title">Warehouse Operator</field>
+            <field name="headcount_required">3</field>
+            <field name="deadline">2026-12-15</field>
+        </record>
+
+        <record id="demo_order_production" model="workforce.job.order">
+            <field name="client_id" ref="demo_client_garuda"/>
+            <field name="position_title">Production Operator</field>
+            <field name="headcount_required">2</field>
+            <field name="deadline">2026-12-20</field>
+        </record>
+
+        <record id="demo_order_store" model="workforce.job.order">
+            <field name="client_id" ref="demo_client_cakrawala"/>
+            <field name="position_title">Store Crew</field>
+            <field name="headcount_required">2</field>
+            <field name="deadline">2026-12-31</field>
+        </record>
+
+        <record id="demo_placement_dewi" model="workforce.placement">
+            <field name="worker_id" ref="demo_worker_dewi"/>
+            <field name="job_order_id" ref="demo_order_warehouse"/>
+            <field name="start_date">2026-11-01</field>
+            <field name="end_date">2027-04-30</field>
+        </record>
+
+        <record id="demo_placement_budi" model="workforce.placement">
+            <field name="worker_id" ref="demo_worker_budi"/>
+            <field name="job_order_id" ref="demo_order_production"/>
+            <field name="start_date">2026-12-01</field>
+        </record>
+
+        <function model="workforce.job.order" name="action_confirm"
+                  eval="[ref('demo_order_warehouse')]"/>
+        <function model="workforce.job.order" name="action_start"
+                  eval="[ref('demo_order_warehouse')]"/>
+        <function model="workforce.job.order" name="action_confirm"
+                  eval="[ref('demo_order_production')]"/>
+        <function model="workforce.placement" name="action_place"
+                  eval="[ref('demo_placement_dewi')]"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_workforce_placement_list" model="ir.ui.view">
+        <field name="name">workforce.placement.list</field>
+        <field name="model">workforce.placement</field>
+        <field name="arch" type="xml">
+            <list string="Placements">
+                <field name="worker_id"/>
+                <field name="job_order_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_workforce_placement_form" model="ir.ui.view">
+        <field name="name">workforce.placement.form</field>
+        <field name="model">workforce.placement</field>
+        <field name="arch" type="xml">
+            <form string="Placement">
+                <header>
+                    <button name="action_place" string="Place" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_finish" string="Finish" type="object"
+                            class="btn-primary" invisible="state != 'placed'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state not in ('draft', 'placed')"
+                            confirm="Cancel this placement?"/>
+                    <button name="%(workforce_ops.action_report_placement_assignment)d"
+                            string="Print Assignment Letter" type="action"
+                            class="btn-secondary"/>
+                    <field name="state" widget="statusbar" options="{'clickable': False}" readonly="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Assignment">
+                            <field name="worker_id"/>
+                            <field name="job_order_id"/>
+                        </group>
+                        <group string="Period">
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_workforce_placement_kanban" model="ir.ui.view">
+        <field name="name">workforce.placement.kanban</field>
+        <field name="model">workforce.placement</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="false" groups_draggable="false"
+                    group_create="false" group_edit="false" group_delete="false"
+                    quick_create="false" class="o_kanban_small_column">
+                <field name="worker_id"/>
+                <field name="job_order_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <strong><field name="worker_id"/></strong>
+                            <div class="text-muted"><field name="job_order_id"/></div>
+                            <div class="mt-2"><field name="start_date"/></div>
+                            <div><field name="end_date"/></div>
+                            <div class="mt-1"><field name="state" widget="badge"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_workforce_placement_search" model="ir.ui.view">
+        <field name="name">workforce.placement.search</field>
+        <field name="model">workforce.placement</field>
+        <field name="arch" type="xml">
+            <search string="Placements">
+                <field name="worker_id"/>
+                <field name="job_order_id"/>
+                <field name="start_date"/>
+                <filter name="filter_draft" string="Draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_placed" string="Placed"
+                        domain="[('state', '=', 'placed')]"/>
+                <filter name="filter_finished" string="Finished"
+                        domain="[('state', '=', 'finished')]"/>
+                <filter name="filter_cancelled" string="Cancelled"
+                        domain="[('state', '=', 'cancelled')]"
+                        groups="workforce_ops.group_workforce_manager"/>
+                <groupby name="group_by_worker" string="Worker"
+                         context="{'group_by': 'worker_id'}"/>
+                <groupby name="group_by_order" string="Job Order"
+                         context="{'group_by': 'job_order_id'}"/>
+                <groupby name="group_by_state" string="State"
+                         context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

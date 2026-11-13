@@ -1,0 +1,33 @@
+# Brief and design are local inputs, never committed
+BRIEF.md
+DESIGN.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Odoo runtime data
+filestore/
+*.filestore/
+odoo-data/
+pgdata/
+*.sql
+*.dump
+*.log
+
+# CI evidence
+ci-artifacts/
+cookies.txt
+web-login.html
+
+# Local configuration and secrets
+.env
+*.env
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store

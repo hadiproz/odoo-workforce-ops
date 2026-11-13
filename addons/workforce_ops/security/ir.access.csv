@@ -1,0 +1,7 @@
+id,name,model_id,group_id/id,operation,domain
+access_workforce_job_order_user,Workforce User job orders,workforce.job.order,workforce_ops.group_workforce_user,cu,
+access_workforce_job_order_manager,Workforce Manager job orders,workforce.job.order,workforce_ops.group_workforce_manager,crud,
+access_workforce_worker_user,Workforce User workers,workforce.worker,workforce_ops.group_workforce_user,cru,
+access_workforce_worker_manager,Workforce Manager workers,workforce.worker,workforce_ops.group_workforce_manager,crud,
+access_workforce_placement_user,Workforce User placements,workforce.placement,workforce_ops.group_workforce_user,cu,
+access_workforce_placement_manager,Workforce Manager placements,workforce.placement,workforce_ops.group_workforce_manager,crud,

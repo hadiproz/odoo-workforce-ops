@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_workforce_job_orders" model="ir.actions.act_window">
+        <field name="name">Job Orders</field>
+        <field name="res_model">workforce.job.order</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_workforce_job_order_search"/>
+    </record>
+
+    <record id="action_workforce_workers" model="ir.actions.act_window">
+        <field name="name">Workers</field>
+        <field name="res_model">workforce.worker</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_workforce_worker_search"/>
+    </record>
+
+    <record id="action_workforce_placements" model="ir.actions.act_window">
+        <field name="name">Placements</field>
+        <field name="res_model">workforce.placement</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_workforce_placement_search"/>
+    </record>
+
+    <menuitem id="menu_workforce_ops_root" name="Workforce Ops"
+              sequence="10" groups="group_workforce_user"/>
+
+    <menuitem id="menu_workforce_job_orders" name="Job Orders"
+              parent="menu_workforce_ops_root" action="action_workforce_job_orders"
+              sequence="10" groups="group_workforce_user"/>
+
+    <menuitem id="menu_workforce_workers" name="Workers"
+              parent="menu_workforce_ops_root" action="action_workforce_workers"
+              sequence="20" groups="group_workforce_user"/>
+
+    <menuitem id="menu_workforce_placements" name="Placements"
+              parent="menu_workforce_ops_root" action="action_workforce_placements"
+              sequence="30" groups="group_workforce_user"/>
+
+</odoo>

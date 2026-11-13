@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_workforce_worker_list" model="ir.ui.view">
+        <field name="name">workforce.worker.list</field>
+        <field name="model">workforce.worker</field>
+        <field name="arch" type="xml">
+            <list string="Workers">
+                <field name="name"/>
+                <field name="job_position"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_workforce_worker_form" model="ir.ui.view">
+        <field name="name">workforce.worker.form</field>
+        <field name="model">workforce.worker</field>
+        <field name="arch" type="xml">
+            <form string="Worker">
+                <sheet>
+                    <group>
+                        <group string="Identity">
+                            <field name="name"/>
+                            <field name="job_position"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email"/>
+                        </group>
+                        <group string="Availability">
+                            <field name="status" readonly="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Placements">
+                            <field name="placement_ids" readonly="1">
+                                <list string="Placements">
+                                    <field name="job_order_id"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_workforce_worker_kanban" model="ir.ui.view">
+        <field name="name">workforce.worker.kanban</field>
+        <field name="model">workforce.worker</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" records_draggable="false" groups_draggable="false"
+                    group_create="false" group_edit="false" group_delete="false"
+                    quick_create="false" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="job_position"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <strong><field name="name"/></strong>
+                            <div class="text-muted"><field name="job_position"/></div>
+                            <div class="mt-2"><field name="phone" widget="phone"/></div>
+                            <div><field name="email" widget="email"/></div>
+                            <div class="mt-1"><field name="status" widget="badge"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_workforce_worker_search" model="ir.ui.view">
+        <field name="name">workforce.worker.search</field>
+        <field name="model">workforce.worker</field>
+        <field name="arch" type="xml">
+            <search string="Workers">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="job_position"/>
+                <filter name="filter_available" string="Available"
+                        domain="[('status', '=', 'available')]"/>
+                <filter name="filter_placed" string="Placed"
+                        domain="[('status', '=', 'placed')]"/>
+                <filter name="filter_inactive" string="Inactive"
+                        domain="[('status', '=', 'inactive')]"/>
+                <filter name="filter_archived" string="Archived"
+                        domain="[('active', '=', False)]"
+                        context="{'active_test': False}"/>
+                <groupby name="group_by_status" string="Status"
+                         context="{'group_by': 'status'}"/>
+                <groupby name="group_by_job_position" string="Job Position"
+                         context="{'group_by': 'job_position'}"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

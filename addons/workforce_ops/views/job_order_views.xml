@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_workforce_job_order_list" model="ir.ui.view">
+        <field name="name">workforce.job.order.list</field>
+        <field name="model">workforce.job.order</field>
+        <field name="arch" type="xml">
+            <list string="Job Orders" default_order="deadline asc, id desc">
+                <field name="client_id"/>
+                <field name="position_title"/>
+                <field name="headcount_required" sum="Required"/>
+                <field name="headcount_filled" sum="Filled"/>
+                <field name="progress"/>
+                <field name="deadline"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_workforce_job_order_form" model="ir.ui.view">
+        <field name="name">workforce.job.order.form</field>
+        <field name="model">workforce.job.order</field>
+        <field name="arch" type="xml">
+            <form string="Job Order">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_start" string="Start" type="object"
+                            class="btn-primary" invisible="state != 'confirmed'"/>
+                    <button name="action_done" string="Mark Done" type="object"
+                            class="btn-primary" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state not in ('draft', 'confirmed', 'in_progress')"
+                            confirm="Cancel this job order?"/>
+                    <field name="state" widget="statusbar" options="{'clickable': False}" readonly="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Request">
+                            <field name="client_id" domain="[('is_company', '=', True)]"
+                                   options="{'no_create': True}"/>
+                            <field name="position_title"/>
+                            <field name="deadline"/>
+                            <field name="headcount_required"/>
+                        </group>
+                        <group string="Progress">
+                            <field name="headcount_filled" widget="progressbar"
+                                   options="{'max_value': 'headcount_required'}"/>
+                            <field name="progress"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Placements">
+                            <field name="placement_ids" readonly="1">
+                                <list string="Placements">
+                                    <field name="worker_id"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_workforce_job_order_kanban" model="ir.ui.view">
+        <field name="name">workforce.job.order.kanban</field>
+        <field name="model">workforce.job.order</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="false" groups_draggable="false"
+                    group_create="false" group_edit="false" group_delete="false"
+                    quick_create="false" class="o_kanban_small_column">
+                <field name="client_id"/>
+                <field name="position_title"/>
+                <field name="headcount_required"/>
+                <field name="headcount_filled"/>
+                <field name="progress"/>
+                <field name="deadline"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <strong><field name="position_title"/></strong>
+                            <div class="text-muted"><field name="client_id"/></div>
+                            <div class="mt-2">
+                                Filled: <field name="headcount_filled"/> /
+                                <field name="headcount_required"/>
+                            </div>
+                            <div class="mt-1"><field name="progress"/>%</div>
+                            <div class="mt-1 text-muted">
+                                Deadline: <field name="deadline"/>
+                            </div>
+                            <div class="mt-1"><field name="state" widget="badge"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_workforce_job_order_search" model="ir.ui.view">
+        <field name="name">workforce.job.order.search</field>
+        <field name="model">workforce.job.order</field>
+        <field name="arch" type="xml">
+            <search string="Job Orders">
+                <field name="client_id"/>
+                <field name="position_title"/>
+                <filter name="filter_active" string="Active"
+                        domain="[('state', '!=', 'cancelled')]"/>
+                <filter name="filter_draft" string="Draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_confirmed" string="Confirmed"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter name="filter_in_progress" string="In Progress"
+                        domain="[('state', '=', 'in_progress')]"/>
+                <filter name="filter_done" string="Done"
+                        domain="[('state', '=', 'done')]"/>
+                <filter name="filter_cancelled" string="Cancelled"
+                        domain="[('state', '=', 'cancelled')]"
+                        groups="workforce_ops.group_workforce_manager"/>
+                <groupby name="group_by_client" string="Client"
+                         context="{'group_by': 'client_id'}"/>
+                <groupby name="group_by_state" string="State"
+                         context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

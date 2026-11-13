@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_placement_assignment" model="ir.actions.report">
+        <field name="name">Placement Assignment Letter</field>
+        <field name="model">workforce.placement</field>
+        <field name="report_type">qweb-pdf-wkhtmltopdf</field>
+        <field name="report_name">workforce_ops.report_placement_assignment_letter</field>
+        <field name="report_file">workforce_ops.report_placement_assignment_letter</field>
+        <field name="print_report_name">'Placement-Assignment-%s.pdf' % object.id</field>
+        <field name="binding_model_id" ref="model_workforce_placement"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">form</field>
+        <field name="multi">False</field>
+        <field name="group_ids" eval="[(6, 0, [ref('group_workforce_user'), ref('group_workforce_manager')])]"/>
+    </record>
+
+    <template id="report_placement_assignment_letter">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>Placement Assignment Letter</h1>
+                        <p class="text-muted">
+                            This is a portfolio sample document. It is not an employment
+                            contract and does not represent a real employer.
+                        </p>
+
+                        <p>
+                            To the attention of the client company named below, we confirm
+                            the assignment of the following worker to the position stated.
+                        </p>
+
+                        <table class="table table-sm w-75">
+                            <tr>
+                                <th class="w-25">Worker</th>
+                                <td><span t-field="o.worker_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th>Client company</th>
+                                <td><span t-field="o.job_order_id.client_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th>Assigned position</th>
+                                <td><span t-field="o.job_order_id.position_title"/></td>
+                            </tr>
+                            <tr>
+                                <th>Start date</th>
+                                <td><span t-field="o.start_date"/></td>
+                            </tr>
+                            <tr>
+                                <th>End date</th>
+                                <td>
+                                    <t t-if="o.end_date"><span t-field="o.end_date"/></t>
+                                    <t t-else="">Not specified</t>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p>
+                            The worker is assigned under the placement conditions agreed
+                            between the parties. Please keep this letter for your records.
+                        </p>
+
+                        <p class="mt-4">Authorized representative: ____________________</p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

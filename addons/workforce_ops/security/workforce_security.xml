@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="module_category_workforce_ops" model="ir.module.category">
+        <field name="name">Workforce Ops</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="privilege_workforce_ops" model="res.groups.privilege">
+        <field name="name">Workforce Ops</field>
+        <field name="category_id" ref="module_category_workforce_ops"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="group_workforce_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="privilege_id" ref="privilege_workforce_ops"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Can manage workforce job orders and placements, and maintain workers.</field>
+    </record>
+
+    <record id="group_workforce_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="privilege_workforce_ops"/>
+        <field name="implied_ids" eval="[(4, ref('group_workforce_user'))]"/>
+        <field name="comment">Full access to workforce job orders, workers and placements.</field>
+    </record>
+
+    <!--
+        Native Odoo 20 read restrictions. Odoo 20 has no ir.model.access.csv or
+        ir.rule equivalent; access records carry both the operation grant and
+        the record domain. Group permissions are OR-ed together, so an
+        unrestricted read grant for the User group would defeat these domains.
+    -->
+    <record id="access_workforce_job_order_user_read" model="ir.access">
+        <field name="name">Workforce User: read non-cancelled job orders</field>
+        <field name="model_id" ref="model_workforce_job_order"/>
+        <field name="group_id" ref="group_workforce_user"/>
+        <field name="operation">r</field>
+        <field name="domain">[('state', '!=', 'cancelled')]</field>
+    </record>
+
+    <record id="access_workforce_placement_user_read" model="ir.access">
+        <field name="name">Workforce User: read non-cancelled placements of non-cancelled job orders</field>
+        <field name="model_id" ref="model_workforce_placement"/>
+        <field name="group_id" ref="group_workforce_user"/>
+        <field name="operation">r</field>
+        <field name="domain">[('state', '!=', 'cancelled'), ('job_order_id.state', '!=', 'cancelled')]</field>
+    </record>
+
+</odoo>
