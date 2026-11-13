@@ -267,8 +267,8 @@ Run the same script locally on a Docker host with:
 bash ci/run_tests.sh
 ```
 
-(The script cleans up its Compose project when the workflow step finishes; it
-does not start a Docker daemon by itself.)
+The GitHub workflow removes its isolated Compose project after uploading the
+evidence; the script itself never starts a Docker daemon.
 
 ## Tech versions
 
